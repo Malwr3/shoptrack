@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>Dashboard</h2>
+        <hr>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card bg-primary text-white shadow">
+            <div class="card-body">
+                <h5>Today's Sales</h5>
+                <h3>KES {{ today_sales.total if today_sales and today_sales.total else 0 }}</h3>
+                <p>{{ today_sales.count if today_sales and today_sales.count else 0 }} Transactions</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-warning text-dark shadow">
+            <div class="card-body">
+                <h5>Low Stock Alerts</h5>
+                <h3>{{ low_stock | length }} items</h3>
+                <p>Below reorder level</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <h4>Low-Stock Items</h4>
+                {% if low_stock %}
+                <ul class="list-group">
+                    {% for item in low_stock %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ item.name }}
+                        <span class="badge bg-danger rounded-pill">{{ item.quantity }} left (Reorder: {{ item.reorder_level }})</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-muted">All stock levels are optimal.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <h4>Recent Sales</h4>
+                {% if recent_sales %}
+                <ul class="list-group">
+                    {% for sale in recent_sales %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ sale.receipt_no }}</strong> <small class="text-muted">by {{ sale.username }}</small>
+                        </div>
+                        <span>KES {{ sale.total }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-muted">No sales recorded yet today.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

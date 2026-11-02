@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-md-7">
+        <h3>Products</h3>
+        <div class="row">
+            {% for p in products %}
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ p.name }}</h5>
+                        <p class="card-text">KES {{ p.selling_price }}<br><small class="text-muted">{{ p.quantity }} left</small></p>
+                        <form method="POST">
+                            <input type="hidden" name="action" value="add">
+                            <input type="hidden" name="product_id" value="{{ p.id }}">
+                            <button type="submit" class="btn btn-primary btn-sm">+ Add</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-body">
+                <h4>Cart</h4>
+                <ul class="list-group mb-3">
+                    {% for item in cart %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ item.name }} (x{{ item.qty }})
+                        <span>KES {{ item.price * item.qty }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <form method="POST">
+                    <input type="hidden" name="action" value="complete">
+                    <div class="mb-3">
+                        <label>Payment Method</label>
+                        <select name="payment_method" class="form-select">
+                            <option value="Cash">Cash</option>
+                            <option value="M-Pesa">M-Pesa</option>
+                            <option value="Card">Card</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Complete Sale</button>
+                </form>
+                <form method="POST" class="mt-2">
+                    <input type="hidden" name="action" value="clear">
+                    <button type="submit" class="btn btn-outline-secondary btn-sm w-100">Clear Cart</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

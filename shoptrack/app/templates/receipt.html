@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow p-4">
+            <div class="text-center mb-3">
+                <h4>DUKANI SHOP</h4>
+                <p class="text-muted mb-0">Kisumu • Tel 0700 000 000</p>
+                <hr>
+                <h5 class="text-success">Receipt {{ sale.receipt_no }}</h5>
+                <p class="small text-muted">Cashier: {{ sale.username }} | Date: {{ sale.created_at }}</p>
+            </div>
+            
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Qty</th>
+                        <th class="text-end">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td class="text-end">KES {{ item.price * item.quantity }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <hr>
+            <div class="d-flex justify-content-between">
+                <span>Subtotal:</span>
+                <span>KES {{ sale.subtotal }}</span>
+            </div>
+            <div class="d-flex justify-content-between">
+                <span>Discount:</span>
+                <span>KES {{ sale.discount }}</span>
+            </div>
+            <div class="d-flex justify-content-between fw-bold fs-5">
+                <span>TOTAL:</span>
+                <span>KES {{ sale.total }}</span>
+            </div>
+            <div class="d-flex justify-content-between text-muted small mt-1">
+                <span>Payment Method:</span>
+                <span>{{ sale.payment_method }}</span>
+            </div>
+            
+            <div class="text-center mt-4">
+                <p class="text-muted fst-italic">Thank you. Come again.</p>
+                <button onclick="window.print()" class="btn btn-secondary btn-sm me-2">Print Receipt</button>
+                <a href="{{ url_for('main.sales') }}" class="btn btn-primary btn-sm">Start New Sale</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
